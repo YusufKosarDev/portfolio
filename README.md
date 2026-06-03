@@ -2,7 +2,7 @@
 
 > Yusuf Koşar's personal portfolio — a cinematic, animated, multilingual single‑page site with dark/light theming.
 
-### 🔗 [**Live Demo → portfolio-ten-eosin-21.vercel.app**](https://portfolio-ten-eosin-21.vercel.app/)
+### 🔗 [**Live Demo → yusufkosar.vercel.app**](https://yusufkosar.vercel.app)
 
 <p>
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
