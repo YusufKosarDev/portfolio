@@ -1,26 +1,168 @@
 @import "tailwindcss";
 
+/* ===== KOYU TEMA (varsayılan) ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --background-alt: #0d1b2a;
+  --foreground: #e6e9f0;
+  --muted: #8b93a7;
+  --accent-from: #8b5cf6;
+  --accent-mid: #6366f1;
+  --accent-to: #22d3ee;
+  --border: rgba(255, 255, 255, 0.08);
+  --card: rgba(255, 255, 255, 0.03);
+  --grid-line: rgba(255, 255, 255, 0.03);
+  --bg-gradient:
+    radial-gradient(60rem 60rem at 15% -10%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(50rem 50rem at 90% 10%, rgba(34, 211, 238, 0.12), transparent 55%),
+    radial-gradient(60rem 60rem at 50% 120%, rgba(139, 92, 246, 0.14), transparent 60%),
+    linear-gradient(180deg, #0a0a0f 0%, #0b1320 50%, #0a0a0f 100%);
+  --card-shadow: 0 0 0 0 transparent;
+  --field-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* ===== AÇIK TEMA ===== */
+html.light {
+  --background: #f6f8fd;
+  --background-alt: #eaeefb;
+  --foreground: #131a2c;
+  --muted: #5b667e;
+  --accent-from: #7c3aed;
+  --accent-mid: #4f46e5;
+  --accent-to: #0891b2;
+  --border: rgba(19, 26, 44, 0.10);
+  --card: rgba(255, 255, 255, 0.72);
+  --grid-line: rgba(19, 26, 44, 0.045);
+  --bg-gradient:
+    radial-gradient(60rem 60rem at 15% -10%, rgba(124, 58, 237, 0.10), transparent 60%),
+    radial-gradient(50rem 50rem at 90% 10%, rgba(8, 145, 178, 0.08), transparent 55%),
+    radial-gradient(60rem 60rem at 50% 120%, rgba(79, 70, 229, 0.08), transparent 60%),
+    linear-gradient(180deg, #f6f8fd 0%, #eef2fb 50%, #f6f8fd 100%);
+  --card-shadow: 0 10px 30px -12px rgba(19, 26, 44, 0.12);
+  --field-bg: rgba(255, 255, 255, 0.85);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-accent-from: var(--accent-from);
+  --color-accent-mid: var(--accent-mid);
+  --color-accent-to: var(--accent-to);
+  --color-border-subtle: var(--border);
+  --color-card: var(--card);
+  --font-sans: var(--font-sans-custom);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+/* Tema geçişi için yumuşak renk animasyonu */
+*,
+*::before,
+*::after {
+  transition: background-color 0.4s ease, border-color 0.4s ease,
+    color 0.25s ease, box-shadow 0.4s ease;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans-custom), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Sinematik arka plan */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-gradient);
+  transition: background 0.5s ease;
+}
+
+/* Gradient metin */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--accent-from) 0%,
+    var(--accent-mid) 45%,
+    var(--accent-to) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Cam kart yüzeyi */
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+
+/* İnce ızgara doku */
+.grid-overlay {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(60% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* Form alanı yüzeyi */
+.field {
+  background: var(--field-bg);
+  border: 1px solid var(--border);
+}
+
+/* Scroll-down göstergesi */
+@keyframes scrollWheel {
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+.scroll-dot {
+  animation: scrollWheel 1.8s ease-in-out infinite;
+}
+
+/* Yavaş dönen konik halka */
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spinSlow 22s linear infinite;
+}
+
+/* Özel scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-from), var(--accent-to));
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+/* Erişilebilirlik */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
