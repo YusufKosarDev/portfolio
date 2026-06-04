@@ -6,6 +6,7 @@ import { projects, type Project } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
+import { ProjectThumbnail } from "@/components/ProjectThumbnail";
 import { GithubIcon, ExternalIcon, ArrowUpRightIcon } from "@/components/icons";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
@@ -40,6 +41,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         />
 
         <div className="relative z-10 flex h-full flex-col">
+          <div className="mb-6">
+            <ProjectThumbnail
+              live={project.live}
+              name={project.name}
+              index={index}
+            />
+          </div>
+
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="font-display text-2xl font-bold tracking-tight">
