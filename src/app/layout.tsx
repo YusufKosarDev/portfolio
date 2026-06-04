@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { personal } from "@/lib/data";
 import { Providers } from "@/components/Providers";
 
@@ -16,14 +18,64 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+const SITE_URL = "https://yusufkosar.vercel.app";
 const title = `${personal.name} — Full Stack Developer`;
 const description =
-  "Production-grade web uygulamaları geliştiren full-stack developer.";
+  "Full Stack Developer Yusuf Koşar — React, Next.js, TypeScript, Node.js ve PostgreSQL ile production-grade web uygulamaları. | Full Stack Developer building production-grade web apps.";
 
 export const metadata: Metadata = {
-  title,
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: title,
+    template: `%s — ${personal.name}`,
+  },
   description,
-  openGraph: { title, description, type: "website" },
+  applicationName: `${personal.name} Portfolio`,
+  authors: [{ name: personal.name, url: SITE_URL }],
+  creator: personal.name,
+  publisher: personal.name,
+  keywords: [
+    "Yusuf Koşar",
+    "Full Stack Developer",
+    "Frontend Developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "PostgreSQL",
+    "Prisma",
+    "Tailwind CSS",
+    "Web Developer",
+    "Yazılım Geliştirici",
+    "Portfolio",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: SITE_URL,
+    siteName: `${personal.name} — Portfolio`,
+    locale: "tr_TR",
+    alternateLocale: ["en_US"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }] },
 };
 
@@ -55,6 +107,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full">
         <Providers>{children}</Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

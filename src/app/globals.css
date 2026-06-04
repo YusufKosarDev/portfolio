@@ -126,6 +126,85 @@ body::before {
   border: 1px solid var(--border);
 }
 
+/* ===== Blog markdown içeriği ===== */
+.prose-portfolio {
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.prose-portfolio > * + * {
+  margin-top: 1.25rem;
+}
+.prose-portfolio h2 {
+  color: var(--foreground);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 2.5rem;
+}
+.prose-portfolio h3 {
+  color: var(--foreground);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+.prose-portfolio p {
+  color: var(--muted);
+}
+.prose-portfolio strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-portfolio a {
+  color: var(--accent-to);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-portfolio ul,
+.prose-portfolio ol {
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.prose-portfolio ul {
+  list-style: disc;
+}
+.prose-portfolio ol {
+  list-style: decimal;
+}
+.prose-portfolio code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.875em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.1rem 0.4rem;
+  color: var(--foreground);
+}
+.prose-portfolio pre {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  overflow-x: auto;
+}
+.prose-portfolio pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.9em;
+}
+.prose-portfolio blockquote {
+  border-left: 3px solid var(--accent-to);
+  padding-left: 1.1rem;
+  color: var(--foreground);
+  font-style: italic;
+  opacity: 0.9;
+}
+
 /* Scroll-down göstergesi */
 @keyframes scrollWheel {
   0% { transform: translateY(0); opacity: 0; }

@@ -20,6 +20,12 @@ const tr = {
   hero: {
     badge: "Yeni projelere açık",
     title: "Full Stack Developer",
+    roles: [
+      "Full Stack Developer",
+      "React & Next.js Geliştiricisi",
+      "TypeScript Meraklısı",
+      "Problem Çözücü",
+    ],
     tagline:
       "Production-grade web uygulamaları geliştiren full-stack developer",
     ctaProjects: "Projelerimi Gör",
@@ -35,6 +41,11 @@ const tr = {
     title: "Ben Kimim?",
     p1: "University of the People'da Bilgisayar Bilimleri okuyan ve Workintech Full-Stack programını tamamlayan bir full-stack developer. React, TypeScript, Node.js ve PostgreSQL ile production seviyesinde uygulamalar geliştiriyorum.",
     p2: "Temiz mimari, test edilebilirlik ve kullanıcı deneyimini önemsiyorum. Fikirden production'a; CI/CD, tip güvenliği ve ölçeklenebilir veri modelleriyle uçtan uca ürünler kuruyorum.",
+    currently: {
+      label: "Şu an",
+      learning: "Java & Spring Boot öğreniyorum",
+      available: "Staj / junior fırsatlarına açığım",
+    },
     highlightsLabel: "Öne çıkan teknolojiler",
     stats: [
       { value: "4+", label: "Production Projesi" },
@@ -132,6 +143,15 @@ const tr = {
     },
     footerNote: "Next.js · TypeScript · Tailwind · Framer Motion ile tasarlandı",
   },
+  blog: {
+    nav: "Blog",
+    title: "Blog & Yazılar",
+    description: "Geliştirme notları, öğrendiklerim ve proje hikâyeleri.",
+    backHome: "Ana sayfaya dön",
+    backList: "Tüm yazılar",
+    readingSuffix: "dk okuma",
+    empty: "Henüz yazı yok. Çok yakında!",
+  },
 };
 
 // EN — aynı yapı, İngilizce içerik.
@@ -149,6 +169,12 @@ const en: Translation = {
   hero: {
     badge: "Open to new projects",
     title: "Full Stack Developer",
+    roles: [
+      "Full Stack Developer",
+      "React & Next.js Developer",
+      "TypeScript Enthusiast",
+      "Problem Solver",
+    ],
     tagline: "Full-stack developer building production-grade web applications",
     ctaProjects: "View My Work",
     ctaContact: "Get in Touch",
@@ -163,6 +189,11 @@ const en: Translation = {
     title: "Who Am I?",
     p1: "A full-stack developer studying Computer Science at the University of the People and a graduate of the Workintech Full-Stack program. I build production-grade applications with React, TypeScript, Node.js and PostgreSQL.",
     p2: "I care about clean architecture, testability and user experience. From idea to production, I build end-to-end products with CI/CD, type safety and scalable data models.",
+    currently: {
+      label: "Currently",
+      learning: "Learning Java & Spring Boot",
+      available: "Open to internship / junior opportunities",
+    },
     highlightsLabel: "Featured technologies",
     stats: [
       { value: "4+", label: "Production Projects" },
@@ -259,6 +290,15 @@ const en: Translation = {
       errMessage: "Message must be at least 10 characters.",
     },
     footerNote: "Built with Next.js · TypeScript · Tailwind · Framer Motion",
+  },
+  blog: {
+    nav: "Blog",
+    title: "Blog & Articles",
+    description: "Development notes, things I learn, and project stories.",
+    backHome: "Back to home",
+    backList: "All posts",
+    readingSuffix: "min read",
+    empty: "No posts yet. Coming soon!",
   },
 };
 

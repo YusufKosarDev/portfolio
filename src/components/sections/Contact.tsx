@@ -8,6 +8,7 @@ import { CvButton } from "@/components/CvButton";
 import {
   GithubIcon,
   LinkedinIcon,
+  InstagramIcon,
   MailIcon,
   ArrowUpRightIcon,
 } from "@/components/icons";
@@ -33,6 +34,12 @@ export function Contact() {
       value: "YusufKosarDev",
       href: personal.github,
       Icon: GithubIcon,
+    },
+    {
+      label: "Instagram",
+      value: "kosarr_yusuf",
+      href: personal.instagram,
+      Icon: InstagramIcon,
     },
   ];
 

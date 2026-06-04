@@ -6,6 +6,7 @@ export const personal = {
   email: "yusufkosare004@gmail.com",
   linkedin: "https://linkedin.com/in/yusufkosar",
   github: "https://github.com/YusufKosarDev",
+  instagram: "https://instagram.com/kosarr_yusuf",
 } as const;
 
 export const highlights = [

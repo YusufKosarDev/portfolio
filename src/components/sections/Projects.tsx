@@ -29,6 +29,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         ref={ref}
         onMouseMove={onMouseMove}
         whileHover={{ y: -6 }}
+        whileTap={{ scale: 0.99 }}
         transition={{ type: "spring", stiffness: 300, damping: 24 }}
         className="group relative h-full overflow-hidden rounded-2xl border border-border-subtle bg-card p-7 transition-colors hover:border-accent-to/30"
       >

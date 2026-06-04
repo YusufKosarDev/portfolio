@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { sectionIds } from "@/lib/data";
 import { useApp } from "@/components/Providers";
@@ -74,6 +75,12 @@ export function Navbar() {
               </AnimatePresence>
             </a>
           ))}
+          <Link
+            href="/blog"
+            className="relative hidden rounded-full px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground sm:block sm:text-[13px]"
+          >
+            <span className="relative z-10">{t.blog.nav}</span>
+          </Link>
         </div>
 
         <span className="mx-1 hidden h-5 w-px bg-border-subtle sm:block" />

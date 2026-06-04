@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { personal } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { CvButton } from "@/components/CvButton";
+import { RotatingText } from "@/components/RotatingText";
 import {
   GithubIcon,
   LinkedinIcon,
+  InstagramIcon,
   MailIcon,
 } from "@/components/icons";
 
@@ -65,7 +67,7 @@ export function Hero() {
           variants={item}
           className="mt-5 font-display text-xl font-medium text-foreground/90 sm:text-2xl md:text-3xl"
         >
-          {t.hero.title}
+          <RotatingText words={t.hero.roles} />
         </motion.p>
 
         <motion.p
@@ -81,13 +83,13 @@ export function Hero() {
         >
           <a
             href="#projects"
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-accent-from via-accent-mid to-accent-to px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent-mid/25 transition-transform hover:scale-[1.03]"
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-accent-from via-accent-mid to-accent-to px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent-mid/25 transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             {t.hero.ctaProjects}
           </a>
           <a
             href="#contact"
-            className="glass inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/10"
+            className="glass inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-all hover:scale-[1.03] hover:bg-foreground/10 active:scale-[0.98]"
           >
             {t.hero.ctaContact}
           </a>
@@ -98,6 +100,7 @@ export function Hero() {
           {[
             { href: personal.github, label: "GitHub", Icon: GithubIcon },
             { href: personal.linkedin, label: "LinkedIn", Icon: LinkedinIcon },
+            { href: personal.instagram, label: "Instagram", Icon: InstagramIcon },
             { href: `mailto:${personal.email}`, label: "E-posta", Icon: MailIcon },
           ].map(({ href, label, Icon }) => (
             <a
