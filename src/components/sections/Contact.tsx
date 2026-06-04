@@ -4,6 +4,7 @@ import { personal } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { Reveal } from "@/components/Reveal";
 import { ContactForm } from "@/components/ContactForm";
+import { CvButton } from "@/components/CvButton";
 import {
   GithubIcon,
   LinkedinIcon,
@@ -81,6 +82,10 @@ export function Contact() {
                   />
                 </a>
               ))}
+            </div>
+
+            <div className="mt-6">
+              <CvButton />
             </div>
           </div>
 

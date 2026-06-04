@@ -26,6 +26,10 @@ const tr = {
     ctaContact: "İletişime Geç",
     scroll: "Kaydır",
   },
+  cv: {
+    download: "CV İndir",
+    file: "/Yusuf_Kosar_CV.pdf",
+  },
   about: {
     eyebrow: "01 — Hakkında",
     title: "Ben Kimim?",
@@ -149,6 +153,10 @@ const en: Translation = {
     ctaProjects: "View My Work",
     ctaContact: "Get in Touch",
     scroll: "Scroll",
+  },
+  cv: {
+    download: "Download CV",
+    file: "/Yusuf_Kosar_Resume_EN.pdf",
   },
   about: {
     eyebrow: "01 — About",

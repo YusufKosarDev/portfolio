@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { personal } from "@/lib/data";
 import { useApp } from "@/components/Providers";
+import { CvButton } from "@/components/CvButton";
 import {
   GithubIcon,
   LinkedinIcon,
@@ -90,6 +91,7 @@ export function Hero() {
           >
             {t.hero.ctaContact}
           </a>
+          <CvButton />
         </motion.div>
 
         <motion.div variants={item} className="mt-8 flex items-center gap-3">
