@@ -130,6 +130,7 @@ export const timeline: TimelineItem[] = [
 
 /** Sertifikalar — başlık ve kurum dilden bağımsız (özel ad). */
 export const certificates = [
+  { title: "PostgreSQL için SQL Dili", org: "BTK Akademi" },
   { title: "Frontend Developer (React)", org: "HackerRank" },
   { title: "React (Basic)", org: "HackerRank" },
   { title: "JavaScript (Basic)", org: "HackerRank" },
