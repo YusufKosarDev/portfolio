@@ -73,6 +73,11 @@ const tr = {
     live: "Canlı Demo",
     code: "Kod",
     items: {
+      ripplechat: {
+        subtitle: "Gerçek Zamanlı Topluluk Sohbet Platformu",
+        description:
+          "Spring Boot + Java backend üzerine kurulu, WebSocket ile anlık mesajlaşma sağlayan topluluk odaklı sohbet platformu. Thread'ler, emoji reaksiyonlar, sözdizimi vurgulu kod paylaşımı ve rol bazlı yetkilendirme (RBAC).",
+      },
       subtrack: {
         subtitle: "Abonelik & Gider Takip Uygulaması",
         description:
@@ -221,6 +226,11 @@ const en: Translation = {
     live: "Live Demo",
     code: "Code",
     items: {
+      ripplechat: {
+        subtitle: "Real-Time Community Chat Platform",
+        description:
+          "Community-focused chat platform built on a Spring Boot + Java backend with real-time messaging over WebSocket. Threads, emoji reactions, syntax-highlighted code sharing, and role-based authorization (RBAC).",
+      },
       subtrack: {
         subtitle: "Subscription & Expense Tracker",
         description:

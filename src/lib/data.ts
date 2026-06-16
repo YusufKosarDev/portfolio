@@ -53,7 +53,7 @@ export const skillCategories: SkillCategory[] = [
 
 /** Çevrilebilir metinler (subtitle/description) i18n'de id ile eşleşir. */
 export type Project = {
-  id: "subtrack" | "garajim" | "ciftlikpro" | "patidefteri";
+  id: "ripplechat" | "subtrack" | "garajim" | "ciftlikpro" | "patidefteri";
   name: string;
   stack: string[];
   live: string;
@@ -81,6 +81,13 @@ export function projectScreenshot(siteUrl: string): string {
 }
 
 export const projects: Project[] = [
+  {
+    id: "ripplechat",
+    name: "RippleChat",
+    stack: ["Spring Boot", "Java", "React", "TypeScript", "PostgreSQL", "WebSocket"],
+    live: "https://ripplechat-app.vercel.app",
+    github: "https://github.com/YusufKosarDev/ripplechat",
+  },
   {
     id: "subtrack",
     name: "SubTrack",
