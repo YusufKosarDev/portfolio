@@ -45,6 +45,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <div className="mb-6">
             <ProjectThumbnail
               live={project.live}
+              media={project.media}
               name={project.name}
               index={index}
             />
@@ -78,15 +79,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </ul>
 
           <div className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-5">
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-colors hover:text-accent-to"
-            >
-              <ExternalIcon width={16} height={16} />
-              {t.projects.live}
-            </a>
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-colors hover:text-accent-to"
+              >
+                <ExternalIcon width={16} height={16} />
+                {t.projects.live}
+              </a>
+            )}
             <a
               href={project.github}
               target="_blank"

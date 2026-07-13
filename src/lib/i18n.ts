@@ -73,10 +73,15 @@ const tr = {
     live: "Canlı Demo",
     code: "Kod",
     items: {
+      pulse: {
+        subtitle: "Gerçek Zamanlı Operasyonel Telemetri & Anomali Platformu",
+        description:
+          "Java/Spring Boot, Python/FastAPI ve React'ten oluşan polyglot dağıtık sistem. Telemetri, Redis Streams tüketici gruplarından (XAUTOCLAIM ile hata toleransı, idempotency, DLQ) akar ve TimescaleDB hypertable'da işlenir; z-score + EWMA ile iki katmanlı anomali tespiti ve Holt-Winters ile eşik aşımını önceden öngören tahmin. SSE canlı akış, ack/resolve uyarı yaşam döngüsü, isabetini kendi ölçen tahmin karnesi ve tek komutla tam konteynerize kurulum.",
+      },
       ripplechat: {
         subtitle: "Gerçek Zamanlı Topluluk Sohbet Platformu",
         description:
-          "Spring Boot + Java backend üzerine kurulu, WebSocket ile anlık mesajlaşma sağlayan topluluk odaklı sohbet platformu. Thread'ler, emoji reaksiyonlar, sözdizimi vurgulu kod paylaşımı ve rol bazlı yetkilendirme (RBAC).",
+          "WebSocket/STOMP ile gerçek zamanlı mesajlaşma, thread'ler, reaksiyonlar ve presence. Uçtan uca şifreleme (X3DH + Double Ratchet), TOTP tabanlı 2FA, oturum/cihaz yönetimi. WebRTC ile sesli/görüntülü arama, Web Push, PWA/offline. Elasticsearch destekli arama, PostgreSQL yedeğine zarifçe düşer.",
       },
       subtrack: {
         subtitle: "Abonelik & Gider Takip Uygulaması",
@@ -89,9 +94,9 @@ const tr = {
           "PostgreSQL Row Level Security üzerine multi-tenant SaaS. Gerçek zamanlı WebSocket senkronizasyonu, Deno serverless fonksiyonları, Recharts ile tahmine dayalı analiz, Cypress E2E testleri.",
       },
       ciftlikpro: {
-        subtitle: "Çiftlik Yönetim Sistemi (ERP)",
+        subtitle: "Çok Kiracılı Çiftlik Yönetim SaaS'ı",
         description:
-          "Hayvan, tarla, stok, finans ve görevleri rol bazlı yetkilendirmeyle (RBAC: Admin/Çalışan/Veteriner/Muhasebeci) tek panelden yöneten tam yığın ERP. 2D çiftlik haritası, 156 birim + 6 E2E test, GitHub Actions CI.",
+          "PostgreSQL Row-Level Security (FORCE + WITH CHECK) ve Prisma extension ile çift katmanlı tenant izolasyonu sağlayan çok kiracılı SaaS. 4 rollü RBAC (Admin/Çalışan/Veteriner/Muhasebeci), tek transaction'da public kayıt (tenant + admin), token'lı personel daveti, FREE/PRO plan limitleri ve Stripe abonelik. KVKK self-servis veri ihracı + hesap silme, 277 birim + 7 E2E testi.",
       },
       patidefteri: {
         subtitle: "Evcil Hayvan Sağlık Takibi",
@@ -226,10 +231,15 @@ const en: Translation = {
     live: "Live Demo",
     code: "Code",
     items: {
+      pulse: {
+        subtitle: "Real-Time Operational Telemetry & Anomaly Platform",
+        description:
+          "A polyglot distributed system in Java/Spring Boot, Python/FastAPI, and React. Telemetry flows through Redis Streams consumer groups (XAUTOCLAIM fault tolerance, idempotency, DLQ) into a TimescaleDB hypertable; two-layer anomaly detection (z-score + EWMA) and Holt-Winters forecasting that predicts threshold breaches before they happen. SSE live stream, ack/resolve alert lifecycle, a self-scoring forecast scorecard, and full containerization in a single command.",
+      },
       ripplechat: {
         subtitle: "Real-Time Community Chat Platform",
         description:
-          "Community-focused chat platform built on a Spring Boot + Java backend with real-time messaging over WebSocket. Threads, emoji reactions, syntax-highlighted code sharing, and role-based authorization (RBAC).",
+          "Real-time messaging over WebSocket/STOMP with threads, reactions, and presence. End-to-end encryption (X3DH + Double Ratchet), TOTP-based 2FA, session/device management. WebRTC voice and video calls, Web Push, PWA/offline. Elasticsearch-powered search that gracefully degrades to a PostgreSQL fallback.",
       },
       subtrack: {
         subtitle: "Subscription & Expense Tracker",
@@ -242,9 +252,9 @@ const en: Translation = {
           "Multi-tenant SaaS built on PostgreSQL Row Level Security. Real-time WebSocket sync, Deno serverless functions, predictive analytics with Recharts, Cypress E2E tests.",
       },
       ciftlikpro: {
-        subtitle: "Farm Management System (ERP)",
+        subtitle: "Multi-Tenant Farm Management SaaS",
         description:
-          "Full-stack ERP managing animals, fields, inventory, finance and tasks from a single panel with role-based access (RBAC: Admin/Worker/Vet/Accountant). 2D farm map, 156 unit + 6 E2E tests, GitHub Actions CI.",
+          "A multi-tenant SaaS with dual-layer tenant isolation via PostgreSQL Row-Level Security (FORCE + WITH CHECK) and a Prisma extension. Four-role RBAC (Admin/Worker/Vet/Accountant), single-transaction public sign-up (tenant + admin), token-based staff invitations, FREE/PRO plan limits, and Stripe subscriptions. Self-service data export + account deletion for regulatory compliance, 277 unit + 7 E2E tests.",
       },
       patidefteri: {
         subtitle: "Pet Health Tracker",

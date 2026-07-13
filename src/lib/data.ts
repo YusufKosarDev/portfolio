@@ -51,13 +51,26 @@ export const skillCategories: SkillCategory[] = [
   },
 ];
 
+/** Yerel medya override'ı (canlı linki olmayan projeler için). */
+export type ProjectMedia = {
+  /** Anında gösterilen hafif poster (video yüklenene kadar) */
+  poster: string;
+  /** Öncelikli video kaynağı (VP9) */
+  webm: string;
+  /** Yedek video kaynağı (H.264 — Safari) */
+  mp4: string;
+};
+
 /** Çevrilebilir metinler (subtitle/description) i18n'de id ile eşleşir. */
 export type Project = {
-  id: "ripplechat" | "subtrack" | "garajim" | "ciftlikpro" | "patidefteri";
+  id: "pulse" | "ripplechat" | "subtrack" | "garajim" | "ciftlikpro" | "patidefteri";
   name: string;
   stack: string[];
-  live: string;
+  /** Canlı demo URL'i. Yoksa kartta "Canlı" linki ve Microlink görseli gösterilmez. */
+  live?: string;
   github: string;
+  /** Canlı link yoksa kart görseli için yerel medya (Microlink yerine geçer). */
+  media?: ProjectMedia;
 };
 
 /**
@@ -82,9 +95,48 @@ export function projectScreenshot(siteUrl: string): string {
 
 export const projects: Project[] = [
   {
+    id: "pulse",
+    name: "Pulse",
+    stack: [
+      "Java",
+      "Spring Boot",
+      "Python",
+      "FastAPI",
+      "React",
+      "TypeScript",
+      "Redis Streams",
+      "TimescaleDB",
+      "Docker",
+    ],
+    // Canlı link bilinçli olarak yok — çok bileşenli dağıtık sistem.
+    github: "https://github.com/YusufKosarDev/pulse",
+    media: {
+      poster: "/projects/pulse-poster.png",
+      webm: "/projects/pulse-demo.webm",
+      mp4: "/projects/pulse-demo.mp4",
+    },
+  },
+  {
+    id: "ciftlikpro",
+    name: "Çiftlik Pro",
+    stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "RLS", "Stripe", "Auth.js"],
+    live: "https://ciftlik-pro.vercel.app",
+    github: "https://github.com/YusufKosarDev/ciftlik-pro",
+  },
+  {
     id: "ripplechat",
     name: "RippleChat",
-    stack: ["Spring Boot", "Java", "React", "TypeScript", "PostgreSQL", "WebSocket"],
+    stack: [
+      "Spring Boot",
+      "Java",
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Elasticsearch",
+      "WebSocket",
+      "WebRTC",
+    ],
     live: "https://ripplechat-app.vercel.app",
     github: "https://github.com/YusufKosarDev/ripplechat",
   },
@@ -101,13 +153,6 @@ export const projects: Project[] = [
     stack: ["React", "Supabase", "PostgreSQL"],
     live: "https://garajim-sage.vercel.app",
     github: "https://github.com/YusufKosarDev/garajim",
-  },
-  {
-    id: "ciftlikpro",
-    name: "Çiftlik Pro",
-    stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Auth.js"],
-    live: "https://ciftlik-pro.vercel.app",
-    github: "https://github.com/YusufKosarDev/ciftlik-pro",
   },
   {
     id: "patidefteri",
