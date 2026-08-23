@@ -73,6 +73,16 @@ const tr = {
     live: "Canlı Demo",
     code: "Kod",
     items: {
+      stacklight: {
+        subtitle: "Hata Takip & Gruplama Platformu",
+        description:
+          "Okuma yolu yazma yolundan ayrık: dashboard veritabanına doğrudan bağlandığı için ingestion servisi uykudayken bile çalışıyor. Hatalar deterministik parmak iziyle gruplanıyor — Java ve JS stack trace normalizasyonu sürümlü tutuluyor. Üç anomali dedektörü gölge modda karşılaştırıldı, aktif dedektör ölçüm sonucuna göre değiştirildi. 320 test, altı CI iş akışı.",
+      },
+      localmediakit: {
+        subtitle: "İçerik Üreticileri İçin Medya Kiti Platformu",
+        description:
+          "Yayınlanan sayfalar değişmez (immutable) snapshot olarak edge'den servis ediliyor; paylaşılan bir link backend uykudayken bile anında açılıyor. Şifre sıfırlama ucundaki timing oracle kapatıldı — gönderim outbox'a taşınarak ölçümle doğrulanmış sabit yanıt süresi sağlandı. 330 backend + 105 frontend + 13 E2E testi; ArchUnit mimari kuralları ihlalde build'i kırıyor, PIT mutation skoru %97.",
+      },
       pulse: {
         subtitle: "Gerçek Zamanlı Operasyonel Telemetri & Anomali Platformu",
         description:
@@ -231,6 +241,16 @@ const en: Translation = {
     live: "Live Demo",
     code: "Code",
     items: {
+      stacklight: {
+        subtitle: "Error Tracking & Grouping Platform",
+        description:
+          "The read path is decoupled from the write path: the dashboard talks to the database directly, so it keeps working even while the ingestion service is asleep. Errors are grouped by deterministic fingerprinting, with versioned Java and JS stack trace normalization. Three anomaly detectors were compared in shadow mode, and the active detector was swapped based on the measurements. 320 tests, six CI workflows.",
+      },
+      localmediakit: {
+        subtitle: "Media Kit Platform for Content Creators",
+        description:
+          "Published pages are served from the edge as immutable snapshots, so a shared link opens instantly even while the backend is asleep. A timing oracle on the password reset endpoint was closed by moving delivery to an outbox, giving a constant response time verified by measurement. 330 backend + 105 frontend + 13 E2E tests; ArchUnit architecture rules fail the build on violation, PIT mutation score 97%.",
+      },
       pulse: {
         subtitle: "Real-Time Operational Telemetry & Anomaly Platform",
         description:

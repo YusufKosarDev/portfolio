@@ -63,7 +63,15 @@ export type ProjectMedia = {
 
 /** Çevrilebilir metinler (subtitle/description) i18n'de id ile eşleşir. */
 export type Project = {
-  id: "pulse" | "ripplechat" | "subtrack" | "garajim" | "ciftlikpro" | "patidefteri";
+  id:
+    | "stacklight"
+    | "localmediakit"
+    | "pulse"
+    | "ripplechat"
+    | "subtrack"
+    | "garajim"
+    | "ciftlikpro"
+    | "patidefteri";
   name: string;
   stack: string[];
   /** Canlı demo URL'i. Yoksa kartta "Canlı" linki ve Microlink görseli gösterilmez. */
@@ -94,6 +102,20 @@ export function projectScreenshot(siteUrl: string): string {
 }
 
 export const projects: Project[] = [
+  {
+    id: "stacklight",
+    name: "Stacklight",
+    stack: ["Java", "Spring Boot", "Next.js", "TypeScript", "PostgreSQL"],
+    live: "https://getstacklight.vercel.app",
+    github: "https://github.com/YusufKosarDev/stacklight",
+  },
+  {
+    id: "localmediakit",
+    name: "LocalMediaKit",
+    stack: ["Java", "Spring Boot", "Next.js", "TypeScript", "PostgreSQL"],
+    live: "https://localmediakit.vercel.app",
+    github: "https://github.com/YusufKosarDev/localmediakit",
+  },
   {
     id: "pulse",
     name: "Pulse",
