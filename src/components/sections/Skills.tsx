@@ -32,13 +32,13 @@ export function Skills() {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-40px" }}
-                className="flex flex-wrap gap-2"
+                className="depth-scene flex flex-wrap gap-2"
               >
                 {cat.skills.map((skill) => (
                   <motion.li
                     key={skill}
                     variants={staggerItem}
-                    whileHover={{ y: -3 }}
+                    whileHover={{ z: 18 }}
                     className="cursor-default rounded-lg border border-border-subtle bg-foreground/[0.02] px-3 py-1.5 text-sm text-foreground/85 transition-colors hover:border-accent-to/40 hover:text-foreground"
                   >
                     {skill}
