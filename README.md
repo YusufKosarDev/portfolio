@@ -17,11 +17,13 @@
 ## ✨ Features
 
 - 🎬 **Cinematic dark theme** with a polished **light theme** toggle — preference is remembered in `localStorage` (no flash on reload).
-- 🌍 **Multilingual (TR / EN)** support with a language switch; all copy lives in a single typed dictionary.
+- 🌍 **Multilingual (TR / EN)** — each language is a real route (`/` and `/en`) with `hreflang` alternates and its own metadata, so both versions are indexable. All copy lives in a single typed dictionary.
+- 📝 **File-based blog** — markdown + frontmatter, one file per language (`<slug>.<lang>.md`), statically generated at build time. No CMS.
 - 🎞️ **Framer Motion** scroll & entrance animations, a top **scroll‑progress bar**, and a **scroll‑spy navbar** that highlights the active section.
 - 🪄 **Cursor‑tracking spotlight cards** in the Projects section that come alive on hover.
 - 📬 **Working contact form** with real email delivery via **Resend**, plus **client‑ and server‑side validation** and success/error states.
-- 📱 **Fully responsive**, honors **`prefers-reduced-motion`**, and ships with **SEO meta tags** (Open Graph included).
+- 📱 **Fully responsive**, honors **`prefers-reduced-motion`**, and ships with **SEO meta tags**, a sitemap, and a dynamically rendered **Open Graph image**.
+- ✅ **Tested and CI-checked** — Vitest suites cover data consistency, TR/EN dictionary parity, contact validation and the blog loader; GitHub Actions runs lint, typecheck, tests and a production build on every push.
 
 ---
 
@@ -31,7 +33,9 @@
 | --------------- | ------------------------------------------------- |
 | **Framework**   | Next.js 16 (App Router), React 19, TypeScript     |
 | **Styling**     | Tailwind CSS v4, Framer Motion                    |
+| **Content**     | Markdown + frontmatter (`marked`)                 |
 | **Email**       | Resend                                            |
+| **Testing**     | Vitest, GitHub Actions                            |
 | **Deployment**  | Vercel                                            |
 
 ---
@@ -40,7 +44,7 @@
 
 ### Prerequisites
 
-- Node.js 18.18+ (Node 20+ recommended)
+- Node.js 20.9+ (required by Next.js 16; CI runs on Node 24)
 - A free [Resend](https://resend.com) account & API key (only needed for the contact form)
 
 ### Installation
@@ -78,29 +82,60 @@ npm run build
 npm run start
 ```
 
+### Scripts
+
+| Script                | What it does                                                        |
+| --------------------- | ------------------------------------------------------------------- |
+| `npm run dev`         | Start the dev server on `http://localhost:3000`                      |
+| `npm run build`       | Production build                                                     |
+| `npm run start`       | Serve the production build                                           |
+| `npm run lint`        | ESLint                                                               |
+| `npm run typecheck`   | `tsc --noEmit`                                                       |
+| `npm test`            | Vitest suites                                                        |
+| `npm run screenshots` | Re-capture project card thumbnails into `public/projects/` — run it after adding a project or when a linked site is redesigned |
+
 ---
 
 ## 📁 Project Structure
 
 ```
 portfolyo/
-├── public/                  # Static assets (favicon, etc.)
+├── .github/workflows/           # CI: lint → typecheck → test → build
+├── scripts/
+│   └── capture-screenshots.mts  # Generates the project card thumbnails
+├── test/stubs/                  # `server-only` stub for the node test env
+├── public/
+│   ├── projects/                # Card thumbnails & the Pulse demo video
+│   └── Yusuf_Kosar_*.pdf        # CV (TR) and résumé (EN)
 └── src/
     ├── app/
-    │   ├── api/contact/      # Contact form route handler (Resend)
-    │   ├── layout.tsx        # Root layout, fonts, theme/lang bootstrap
-    │   ├── page.tsx          # Single-page composition of all sections
-    │   └── globals.css       # Theme tokens, animations, utilities
+    │   ├── [lang]/              # Locale-scoped routes — "tr" is served bare, "en" is prefixed
+    │   │   ├── layout.tsx       # Fonts, per-language metadata, theme bootstrap
+    │   │   ├── page.tsx         # Single-page composition of all sections
+    │   │   ├── blog/            # Blog index + [slug] detail pages
+    │   │   └── opengraph-image.tsx, twitter-image.tsx
+    │   ├── api/contact/         # Contact form route handler (Resend)
+    │   ├── globals.css          # Theme tokens, animations, utilities
+    │   ├── robots.ts
+    │   └── sitemap.ts           # Canonical URLs + hreflang alternates
     ├── components/
-    │   ├── sections/         # Hero, About, Skills, Projects, Experience, Contact
-    │   ├── Providers.tsx     # Theme + language context
-    │   ├── Navbar.tsx        # Scroll-spy nav + theme & language toggles
-    │   ├── ContactForm.tsx   # Validated contact form
-    │   └── ...               # ScrollProgress, Reveal, icons, toggles
+    │   ├── sections/            # Hero, About, Skills, Projects, Experience, Contact
+    │   ├── blog/                # BlogIndex, BlogPost, BlogTopBar
+    │   ├── Providers.tsx        # Theme + language context
+    │   ├── Navbar.tsx           # Scroll-spy nav + theme & language toggles
+    │   ├── ContactForm.tsx      # Validated contact form
+    │   └── ...                  # ScrollProgress, Reveal, ProjectThumbnail, icons
+    ├── content/blog/            # Markdown posts — `<slug>.<lang>.md`
     └── lib/
-        ├── data.ts           # Links, skills, projects, certificates
-        └── i18n.ts           # TR/EN translations
+        ├── data.ts              # Links, skills, projects, certificates
+        ├── i18n.ts              # TR/EN translations
+        ├── blog.ts              # Frontmatter + markdown loader
+        ├── contact.ts           # Validation, honeypot, rate limiting
+        ├── routes.ts            # Locale path helpers
+        └── __tests__/           # Vitest suites
 ```
+
+> Turkish is the default language and is served on bare URLs (`/`, `/blog`) via a rewrite, so links printed on a CV keep working. English lives under `/en`. See [`src/lib/routes.ts`](src/lib/routes.ts).
 
 ---
 
@@ -108,8 +143,11 @@ portfolyo/
 
 All content is centralized for easy editing — no need to touch the components:
 
-- **Texts & translations** → [`src/lib/i18n.ts`](src/lib/i18n.ts) (edit both the `tr` and `en` dictionaries to keep them in sync)
-- **Projects, links & certificates** → [`src/lib/data.ts`](src/lib/data.ts)
+- **Texts & translations** → [`src/lib/i18n.ts`](src/lib/i18n.ts) (edit both the `tr` and `en` dictionaries to keep them in sync — the tests fail if they drift apart)
+- **Projects, links & certificates** → [`src/lib/data.ts`](src/lib/data.ts) (after adding a project with a live URL, run `npm run screenshots` to generate its card thumbnail)
+- **Blog posts** → drop `<slug>.tr.md` **and** `<slug>.en.md` into [`src/content/blog/`](src/content/blog). Both languages are required — leaving one out fails the test suite. Frontmatter fields: `title`, `date`, `excerpt`, `tags`.
+
+Environment variables are documented in [`.env.example`](.env.example) — `RESEND_API_KEY` is the only required one; `CONTACT_FROM` and `CONTACT_TO` fall back to sensible defaults.
 
 ---
 
