@@ -4,19 +4,24 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { MotionConfig } from "framer-motion";
+import { getTranslation, type Lang, type Translation } from "@/lib/i18n";
 import {
-  DEFAULT_LANG,
-  getTranslation,
-  type Lang,
-  type Translation,
-} from "@/lib/i18n";
-
-type Theme = "dark" | "light";
+  getThemeServerSnapshot,
+  getThemeSnapshot,
+  setTheme,
+  subscribeTheme,
+  type Theme,
+} from "@/lib/theme-store";
+import {
+  getLangServerSnapshot,
+  getLangSnapshot,
+  setStoredLang,
+  subscribeLang,
+} from "@/lib/lang-store";
 
 type AppContextValue = {
   theme: Theme;
@@ -30,43 +35,34 @@ type AppContextValue = {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function Providers({ children }: { children: ReactNode }) {
-  // Tema: flash önlemek için layout'taki inline script <html>'e class ekler.
-  // Burada ilk değeri DOM'dan okuyarak hidrasyonla uyumlu tutuyoruz.
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+  // Tema ve dil React'in dışında yaşıyor: layout'taki inline script ikisini de
+  // hidrasyondan önce <html> üzerine uyguluyor (flash önleme). Harici store
+  // olarak okunduklarında React hidrasyonda sunucu değerini kullanır, hemen
+  // ardından istemci değeriyle yeniden render eder — ne senkron setState
+  // gerekir ne de hidrasyon uyumsuzluğu oluşur.
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getThemeServerSnapshot
+  );
 
-  // İlk yüklemede gerçek tercihleri uygula (DOM + localStorage).
-  useEffect(() => {
-    const storedTheme =
-      document.documentElement.classList.contains("light") ? "light" : "dark";
-    setTheme(storedTheme);
-
-    const storedLang = localStorage.getItem("lang") as Lang | null;
-    if (storedLang === "tr" || storedLang === "en") {
-      setLangState(storedLang);
-      document.documentElement.lang = storedLang;
-    }
-  }, []);
+  const lang = useSyncExternalStore(
+    subscribeLang,
+    getLangSnapshot,
+    getLangServerSnapshot
+  );
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      const root = document.documentElement;
-      root.classList.toggle("light", next === "light");
-      localStorage.setItem("theme", next);
-      return next;
-    });
+    setTheme(getThemeSnapshot() === "dark" ? "light" : "dark");
   }, []);
 
   const setLang = useCallback((next: Lang) => {
-    setLangState(next);
-    localStorage.setItem("lang", next);
-    document.documentElement.lang = next;
+    setStoredLang(next);
   }, []);
 
   const toggleLang = useCallback(() => {
-    setLang(lang === "tr" ? "en" : "tr");
-  }, [lang, setLang]);
+    setStoredLang(getLangSnapshot() === "tr" ? "en" : "tr");
+  }, []);
 
   const value: AppContextValue = {
     theme,

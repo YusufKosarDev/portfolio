@@ -27,20 +27,12 @@ export function CountUp({ value, duration = 1400, className }: CountUpProps) {
   const target = match ? parseInt(match[2], 10) : null;
   const suffix = match?.[3] ?? "";
 
-  const [display, setDisplay] = useState(
-    target === null || reduceMotion ? value : `${prefix}0${suffix}`
-  );
+  // Animasyonun ürettiği ara değer. null ise sayım henüz başlamamıştır.
+  const [animated, setAnimated] = useState<string | null>(null);
 
   useEffect(() => {
-    if (target === null) {
-      setDisplay(value);
-      return;
-    }
-    if (reduceMotion) {
-      setDisplay(value);
-      return;
-    }
-    if (!inView) return;
+    // Sayısal olmayan değerlerde ve hareket kısıtlamasında animasyon yok.
+    if (target === null || reduceMotion || !inView) return;
 
     let raf = 0;
     const start = performance.now();
@@ -49,12 +41,17 @@ export function CountUp({ value, duration = 1400, className }: CountUpProps) {
       // easeOutCubic
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(eased * target);
-      setDisplay(`${prefix}${current}${suffix}`);
+      setAnimated(`${prefix}${current}${suffix}`);
       if (progress < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, target, duration, prefix, suffix, value, reduceMotion]);
+  }, [inView, target, duration, prefix, suffix, reduceMotion]);
+
+  // Gösterilecek değer render sırasında türetilir; böylece effect gövdesinde
+  // senkron setState yapmaya gerek kalmaz (cascading render tetiklemez).
+  const display =
+    target !== null && !reduceMotion ? animated ?? `${prefix}0${suffix}` : value;
 
   return (
     <span ref={ref} className={className}>
