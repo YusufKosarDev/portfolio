@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { highlights } from "@/lib/data";
+import { highlights, projects, certificates } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal, staggerContainer, staggerItem } from "@/components/Reveal";
@@ -9,6 +9,14 @@ import { CountUp } from "@/components/CountUp";
 
 export function About() {
   const { t } = useApp();
+
+  // Sayılar veriden türetilir; elle yazılan sabitler proje/sertifika
+  // eklendikçe gerçek veriyle uyumsuzlaşıyordu.
+  const stats = [
+    { value: String(projects.length), label: t.about.stats.projects },
+    { value: String(certificates.length), label: t.about.stats.certificates },
+    { value: "∞", label: t.about.stats.learning },
+  ];
 
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-24 sm:py-32">
@@ -63,7 +71,7 @@ export function About() {
 
         <Reveal delay={0.15} className="md:col-span-2">
           <div className="grid gap-4">
-            {t.about.stats.map((s) => (
+            {stats.map((s) => (
               <motion.div
                 key={s.label}
                 whileHover={{ y: -3 }}

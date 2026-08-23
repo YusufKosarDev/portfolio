@@ -47,11 +47,11 @@ const tr = {
       available: "Staj / junior fırsatlarına açığım",
     },
     highlightsLabel: "Öne çıkan teknolojiler",
-    stats: [
-      { value: "4+", label: "Production Projesi" },
-      { value: "6", label: "Sertifika" },
-      { value: "∞", label: "Öğrenme İsteği" },
-    ],
+    stats: {
+      projects: "Production Projesi",
+      certificates: "Sertifika",
+      learning: "Öğrenme İsteği",
+    },
   },
   skills: {
     eyebrow: "02 — Yetenekler",
@@ -215,11 +215,11 @@ const en: Translation = {
       available: "Open to internship / junior opportunities",
     },
     highlightsLabel: "Featured technologies",
-    stats: [
-      { value: "4+", label: "Production Projects" },
-      { value: "6", label: "Certificates" },
-      { value: "∞", label: "Drive to Learn" },
-    ],
+    stats: {
+      projects: "Production Projects",
+      certificates: "Certificates",
+      learning: "Drive to Learn",
+    },
   },
   skills: {
     eyebrow: "02 — Skills",
