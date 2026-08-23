@@ -57,9 +57,15 @@ Task 6 artışı ölçebilsin diye referans değeri **değişikliklerden önce**
 
 ```bash
 npm run build
+find .next/static/chunks -name "*.js" -type f -printf "%s\n" | awk '{s+=$1} END {print s}'
+find .next/static -name "*.css" -type f -printf "%s\n" | awk '{s+=$1} END {print s}'
 ```
 
-`Route (app)` tablosundaki `/[lang]` satırının **First Load JS** değerini not et. Bu sayı Task 6 Step 1'de karşılaştırma tabanı olacak.
+Çıkan iki sayıyı not et. Bu, Task 6 Step 1'de karşılaştırma tabanı olacak.
+
+> **Not:** Next 16 Turbopack ile build çıktısında artık "First Load JS" sütunu basılmıyor, bu yüzden ölçüm diskteki chunk boyutları üzerinden yapılıyor.
+>
+> Bu repodaki referans değerler (2026-08-23, Faz 1 öncesi): **JS 1.134.263 bayt / 16 dosya**, **CSS 48.753 bayt**.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -723,11 +729,15 @@ git commit -m "Pop the skill chips toward the viewer on hover"
 
 - [ ] **Step 1: Measure the bundle against the baseline**
 
-Run: `npm run build`
+```bash
+npm run build
+find .next/static/chunks -name "*.js" -type f -printf "%s\n" | awk '{s+=$1} END {print s}'
+find .next/static -name "*.css" -type f -printf "%s\n" | awk '{s+=$1} END {print s}'
+```
 
-`/[lang]` satırının **First Load JS** değerini, Task 1 Step 0'da not ettiğin referansla karşılaştır.
+Task 1 Step 0'daki referansla karşılaştır.
 
-Expected: fark **0 kB'a çok yakın**. Bu fazda yeni bağımlılık yok; eklenen şey birkaç yüz bayt JS ve CSS. Belirgin bir artış varsa yanlışlıkla ağır bir şey import edilmiştir — `npm run build` çıktısındaki chunk listesini incele.
+Expected: JS artışı **birkaç yüz bayt** düzeyinde, CSS artışı **1 kB'ın altında**. Bu fazda yeni bağımlılık yok. Kilobaytlarca artış varsa yanlışlıkla ağır bir şey import edilmiştir — chunk dosyalarını tek tek karşılaştır.
 
 - [ ] **Step 2: Verify reduced-motion actually disables the tilt**
 
