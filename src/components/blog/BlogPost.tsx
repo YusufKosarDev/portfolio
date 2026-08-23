@@ -4,14 +4,15 @@ import type { Post } from "@/lib/blog";
 import { useApp } from "@/components/Providers";
 import { Reveal } from "@/components/Reveal";
 import { BlogTopBar, useFormattedDate } from "@/components/blog/BlogTopBar";
+import { localePath } from "@/lib/routes";
 
 export function BlogPost({ post }: { post: Post }) {
-  const { t } = useApp();
+  const { t, lang } = useApp();
   const date = useFormattedDate(post.date);
 
   return (
     <>
-      <BlogTopBar to="/blog" label={t.blog.backList} />
+      <BlogTopBar to={localePath(lang, "/blog")} label={t.blog.backList} />
       <main className="relative mx-auto max-w-2xl px-6 pb-24 pt-32 sm:pt-36">
         <Reveal>
           <div className="flex items-center gap-3 text-xs text-muted">

@@ -21,8 +21,11 @@
   --field-bg: rgba(255, 255, 255, 0.03);
 }
 
-/* ===== AÇIK TEMA ===== */
-html.light {
+/* ===== AÇIK TEMA =====
+   Sınıf yerine data özniteliği: React <html> üzerindeki className’i render
+   ettiğinden, dil değişiminde kök layout yeniden render olunca imperatif
+   eklenen sınıf siliniyordu. data-theme’e React dokunmaz. */
+html[data-theme="light"] {
   --background: #f6f8fd;
   --background-alt: #eaeefb;
   --foreground: #131a2c;

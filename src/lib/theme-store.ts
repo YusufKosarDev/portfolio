@@ -1,6 +1,11 @@
 // Tema tercihi React'in dışında yaşıyor: layout'taki inline script, hidrasyondan
-// önce <html> üzerine `light` sınıfını koyuyor (flash önleme). Bu modül o DOM
-// durumunu tek doğru kaynak olarak sunar.
+// önce <html> üzerine data-theme özniteliğini koyuyor (flash önleme). Bu modül o
+// DOM durumunu tek doğru kaynak olarak sunar.
+//
+// Neden sınıf değil de data özniteliği: kök layout <html> üzerinde className
+// render ediyor. Dil değiştiğinde kök layout yeniden render olduğu için React
+// class attribute'unu kendi değeriyle üzerine yazıyor ve imperatif eklenen tema
+// sınıfı siliniyordu. React render etmediği data-theme'e dokunmaz.
 //
 // useSyncExternalStore ile okunduğunda React hidrasyonda sunucu anlık görüntüsünü
 // kullanır, hemen ardından istemci değeriyle yeniden render eder. Böylece ne
@@ -18,7 +23,7 @@ export function subscribeTheme(onStoreChange: () => void): () => void {
 }
 
 export function getThemeSnapshot(): Theme {
-  return document.documentElement.classList.contains("light") ? "light" : "dark";
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
 }
 
 /** Sunucuda DOM yok; inline script çalışmadan önceki varsayılan koyu tema. */
@@ -27,7 +32,7 @@ export function getThemeServerSnapshot(): Theme {
 }
 
 export function setTheme(next: Theme): void {
-  document.documentElement.classList.toggle("light", next === "light");
+  document.documentElement.dataset.theme = next;
   try {
     localStorage.setItem("theme", next);
   } catch {

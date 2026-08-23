@@ -16,60 +16,35 @@ import {
   subscribeTheme,
   type Theme,
 } from "@/lib/theme-store";
-import {
-  getLangServerSnapshot,
-  getLangSnapshot,
-  setStoredLang,
-  subscribeLang,
-} from "@/lib/lang-store";
 
 type AppContextValue = {
   theme: Theme;
   toggleTheme: () => void;
+  /** Aktif dil. Adresten gelir (sunucuda belirlenir), istemcide değişmez. */
   lang: Lang;
-  setLang: (lang: Lang) => void;
-  toggleLang: () => void;
   t: Translation;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-export function Providers({ children }: { children: ReactNode }) {
-  // Tema ve dil React'in dışında yaşıyor: layout'taki inline script ikisini de
-  // hidrasyondan önce <html> üzerine uyguluyor (flash önleme). Harici store
-  // olarak okunduklarında React hidrasyonda sunucu değerini kullanır, hemen
-  // ardından istemci değeriyle yeniden render eder — ne senkron setState
-  // gerekir ne de hidrasyon uyumsuzluğu oluşur.
+export function Providers({ lang, children }: { lang: Lang; children: ReactNode }) {
+  // Tema DOM'da yaşıyor: layout'taki inline script hidrasyondan önce <html>'e
+  // class ekliyor. Harici store olarak okunduğu için effect içinde senkron
+  // setState gerekmiyor ve hidrasyon uyumsuzluğu oluşmuyor.
   const theme = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
     getThemeServerSnapshot
   );
 
-  const lang = useSyncExternalStore(
-    subscribeLang,
-    getLangSnapshot,
-    getLangServerSnapshot
-  );
-
   const toggleTheme = useCallback(() => {
     setTheme(getThemeSnapshot() === "dark" ? "light" : "dark");
-  }, []);
-
-  const setLang = useCallback((next: Lang) => {
-    setStoredLang(next);
-  }, []);
-
-  const toggleLang = useCallback(() => {
-    setStoredLang(getLangSnapshot() === "tr" ? "en" : "tr");
   }, []);
 
   const value: AppContextValue = {
     theme,
     toggleTheme,
     lang,
-    setLang,
-    toggleLang,
     t: getTranslation(lang),
   };
 

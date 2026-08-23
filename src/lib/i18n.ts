@@ -7,6 +7,11 @@ export const LANGS: Lang[] = ["tr", "en"];
 export const DEFAULT_LANG: Lang = "tr";
 
 const tr = {
+  meta: {
+    title: "Full Stack Developer",
+    description:
+      "Full Stack Developer Yusuf Koşar — React, Next.js, TypeScript, Node.js ve PostgreSQL ile production-grade web uygulamaları.",
+  },
   nav: {
     hero: "Ana Sayfa",
     about: "Hakkında",
@@ -179,6 +184,11 @@ const tr = {
 
 // EN — aynı yapı, İngilizce içerik.
 const en: Translation = {
+  meta: {
+    title: "Full Stack Developer",
+    description:
+      "Full Stack Developer Yusuf Koşar — production-grade web apps built with React, Next.js, TypeScript, Node.js and PostgreSQL.",
+  },
   nav: {
     hero: "Home",
     about: "About",
@@ -351,6 +361,11 @@ const en: Translation = {
 export type Translation = typeof tr;
 
 export const translations: Record<Lang, Translation> = { tr, en };
+
+/** Gelen rota parametresinin desteklenen bir dil olup olmadığını doğrular. */
+export function isLang(value: string): value is Lang {
+  return (LANGS as string[]).includes(value);
+}
 
 export function getTranslation(lang: Lang): Translation {
   return translations[lang] ?? translations[DEFAULT_LANG];

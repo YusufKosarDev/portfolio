@@ -8,11 +8,12 @@ import { useApp } from "@/components/Providers";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LangToggle } from "@/components/LangToggle";
 import { MenuIcon, CloseIcon } from "@/components/icons";
+import { localePath } from "@/lib/routes";
 
 const MOBILE_NAV_ID = "mobile-nav";
 
 export function Navbar() {
-  const { t } = useApp();
+  const { t, lang } = useApp();
   const [active, setActive] = useState<string>("hero");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -117,7 +118,7 @@ export function Navbar() {
             </a>
           ))}
           <Link
-            href="/blog"
+            href={localePath(lang, "/blog")}
             className="relative hidden rounded-full px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:text-foreground sm:block sm:text-[13px]"
           >
             <span className="relative z-10">{t.blog.nav}</span>
@@ -161,7 +162,7 @@ export function Navbar() {
               ))}
               <li>
                 <Link
-                  href="/blog"
+                  href={localePath(lang, "/blog")}
                   onClick={() => setMenuOpen(false)}
                   className="block rounded-xl px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-foreground/[0.06]"
                 >

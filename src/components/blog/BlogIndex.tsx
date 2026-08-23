@@ -6,15 +6,16 @@ import type { PostMeta } from "@/lib/blog";
 import { useApp } from "@/components/Providers";
 import { Reveal } from "@/components/Reveal";
 import { BlogTopBar, useFormattedDate } from "@/components/blog/BlogTopBar";
+import { localePath } from "@/lib/routes";
 import { ArrowUpRightIcon } from "@/components/icons";
 
 function PostCard({ post, index }: { post: PostMeta; index: number }) {
-  const { t } = useApp();
+  const { t, lang } = useApp();
   const date = useFormattedDate(post.date);
 
   return (
     <Reveal delay={index * 0.06}>
-      <Link href={`/blog/${post.slug}`}>
+      <Link href={localePath(lang, `/blog/${post.slug}`)}>
         <motion.article
           whileHover={{ y: -4 }}
           whileTap={{ scale: 0.99 }}
@@ -61,11 +62,11 @@ function PostCard({ post, index }: { post: PostMeta; index: number }) {
 }
 
 export function BlogIndex({ posts }: { posts: PostMeta[] }) {
-  const { t } = useApp();
+  const { t, lang } = useApp();
 
   return (
     <>
-      <BlogTopBar to="/" label={t.blog.backHome} />
+      <BlogTopBar to={localePath(lang, "/")} label={t.blog.backHome} />
       <main className="relative mx-auto max-w-3xl px-6 pb-24 pt-32 sm:pt-36">
         <Reveal>
           <span className="mb-3 inline-block font-mono text-xs font-semibold uppercase tracking-[0.3em] text-accent-to/90">
