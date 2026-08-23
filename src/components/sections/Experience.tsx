@@ -1,10 +1,36 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { timeline, certificates } from "@/lib/data";
 import { useApp } from "@/components/Providers";
+import { useTilt } from "@/lib/useTilt";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal } from "@/components/Reveal";
 import { GraduationIcon, BadgeIcon } from "@/components/icons";
+
+/** Framer hover'ı olmayan düz kartlar için eğimli sarmalayıcı. */
+function TiltCard({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className: string;
+}) {
+  const { ref, onPointerMove, onPointerLeave } = useTilt<HTMLDivElement>();
+
+  return (
+    <div className="tilt-scene">
+      <div
+        ref={ref}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+        className={`tilt ${className}`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export function Experience() {
   const { t } = useApp();
@@ -35,7 +61,7 @@ export function Experience() {
                   <span className="absolute -left-[41px] top-1 flex h-5 w-5 items-center justify-center rounded-full bg-background ring-1 ring-border-subtle">
                     <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-accent-from to-accent-to" />
                   </span>
-                  <div className="glass rounded-2xl p-5 transition-colors hover:bg-foreground/[0.03]">
+                  <TiltCard className="glass rounded-2xl p-5 transition-colors hover:bg-foreground/[0.03]">
                     <div className="mb-2 flex items-center gap-2">
                       <GraduationIcon
                         width={16}
@@ -55,7 +81,7 @@ export function Experience() {
                     <p className="mt-2 text-sm leading-relaxed text-muted">
                       {copy.description}
                     </p>
-                  </div>
+                  </TiltCard>
                 </Reveal>
               );
             })}
@@ -70,7 +96,7 @@ export function Experience() {
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
             {certificates.map((cert, i) => (
               <Reveal key={cert.title} delay={i * 0.07}>
-                <div className="glass group flex items-center gap-4 rounded-2xl p-5 transition-colors hover:bg-foreground/[0.03]">
+                <TiltCard className="glass group flex items-center gap-4 rounded-2xl p-5 transition-colors hover:bg-foreground/[0.03]">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-from/20 to-accent-to/20 text-accent-to ring-1 ring-border-subtle transition-transform group-hover:scale-110">
                     <BadgeIcon />
                   </span>
@@ -78,7 +104,7 @@ export function Experience() {
                     <h4 className="font-medium text-foreground">{cert.title}</h4>
                     <p className="text-sm text-muted">{cert.org}</p>
                   </div>
-                </div>
+                </TiltCard>
               </Reveal>
             ))}
           </div>

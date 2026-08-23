@@ -239,6 +239,34 @@ body::before {
   border: 2px solid var(--background);
 }
 
+/* ===== 3D derinlik katmanı =====
+   .tilt-scene perspektifi taşır, .tilt eğilen yüzeydir. İkisinin ayrı
+   olmasının nedeni: Framer Motion hover animasyonları (whileHover) elemana
+   satır içi transform yazıyor ve CSS sınıfını eziyor. Perspektif dıştaki
+   motion elemanında, eğim içteki düz elemanda kalınca ikisi çakışmıyor. */
+.tilt-scene {
+  perspective: 900px;
+}
+
+.tilt {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+/* Çiplerde eğim yerine derinlik sıçraması. */
+.depth-scene {
+  perspective: 600px;
+}
+
+/* Yalnızca gerçek imleci olan cihazlarda. Dokunmatikte hover kavramı yok;
+   eğim orada ya hiç tetiklenmez ya da dokunuştan sonra takılı kalır. */
+@media (hover: none), (pointer: coarse) {
+  .tilt {
+    transform: none;
+  }
+}
+
 /* Erişilebilirlik */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -246,5 +274,9 @@ body::before {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* Süreyi sıfırlamak yetmez: eğim bir geçiş değil, kalıcı bir dönüşüm. */
+  .tilt {
+    transform: none;
   }
 }
