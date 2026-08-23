@@ -39,43 +39,53 @@ export type SceneHandle = {
   dispose(): void;
 };
 
+// Ölçek notu: nokta boyutu ve alfa bilinçli olarak düşük. Bunlar bir kez
+// abartılı ayarlandı (çarpan 300, alfa 0.35–1.0) ve sonuç telemetri akışı
+// değil, ismi yiyen dev bokeh lekeleri oldu. Sahne arka plandır; fark
+// edilmeli ama okunmayı engellememeli.
 const vertexShader = `
-  attribute float aSpeed;
   attribute float aSeed;
   attribute float aAnomaly;
   varying float vAlpha;
   varying float vAnomaly;
+  varying float vSeed;
   uniform float uOpacity;
 
   void main() {
     vAnomaly = aAnomaly;
+    vSeed = aSeed;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mvPosition;
     // Uzaktaki parçacık hem küçük hem sönük: derinlik hissi buradan geliyor.
     float depth = clamp(1.0 - (-mvPosition.z / ${DEPTH.toFixed(1)}), 0.0, 1.0);
-    gl_PointSize = (1.0 + depth * 3.0 + aAnomaly * 4.0) * (300.0 / -mvPosition.z);
-    vAlpha = depth * uOpacity * (0.35 + 0.65 * fract(aSeed));
+    gl_PointSize = (0.5 + depth * 1.2 + aAnomaly * 2.5) * (45.0 / -mvPosition.z);
+    vAlpha = depth * uOpacity * (0.10 + 0.30 * fract(aSeed));
   }
 `;
 
 const fragmentShader = `
   varying float vAlpha;
   varying float vAnomaly;
+  varying float vSeed;
   uniform vec3 uColorA;
   uniform vec3 uColorB;
   uniform vec3 uColorC;
   uniform vec3 uAnomaly;
 
   void main() {
-    // Yuvarlak parçacık: kare noktanın köşelerini at.
+    // Yuvarlak parçacık: kare noktanın köşelerini at, kenara doğru sönümle.
     vec2 d = gl_PointCoord - vec2(0.5);
-    float r = dot(d, d);
-    if (r > 0.25) discard;
+    float r = length(d);
+    if (r > 0.5) discard;
+    float falloff = smoothstep(0.5, 0.0, r);
 
-    vec3 base = mix(uColorA, uColorB, gl_PointCoord.x);
-    base = mix(base, uColorC, gl_PointCoord.y);
+    // Renk parçacık başına seçilir; nokta içinde gradyan kurmak büyük
+    // noktalarda leke gibi görünüyordu.
+    vec3 base = vSeed < 0.5
+      ? mix(uColorA, uColorB, vSeed * 2.0)
+      : mix(uColorB, uColorC, (vSeed - 0.5) * 2.0);
     vec3 color = mix(base, uAnomaly, vAnomaly);
-    gl_FragColor = vec4(color, vAlpha * (1.0 - r * 4.0));
+    gl_FragColor = vec4(color, vAlpha * falloff);
   }
 `;
 
@@ -113,7 +123,6 @@ export function createScene(
 
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", positionAttribute);
-  geometry.setAttribute("aSpeed", new BufferAttribute(speeds, 1));
   geometry.setAttribute("aSeed", new BufferAttribute(seeds, 1));
   geometry.setAttribute("aAnomaly", anomalyAttribute);
 

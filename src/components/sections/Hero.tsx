@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { personal } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { CvButton } from "@/components/CvButton";
-import { CssBackdrop } from "@/components/hero/CssBackdrop";
+import { HeroBackdrop } from "@/components/hero/HeroBackdrop";
 import { RotatingText } from "@/components/RotatingText";
 import {
   GithubIcon,
@@ -36,7 +36,7 @@ export function Hero() {
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
     >
       <div className="grid-overlay pointer-events-none absolute inset-0" />
-      <CssBackdrop />
+      <HeroBackdrop />
 
       <motion.div
         variants={container}

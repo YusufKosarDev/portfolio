@@ -1,6 +1,6 @@
 "use client";
 
-import type { EligibilityInput } from "@/lib/scene/eligibility";
+import { isSceneEligible, type EligibilityInput } from "@/lib/scene/eligibility";
 
 /**
  * WebGL2 bağlamı gerçekten oluşturulabiliyor mu?
@@ -29,4 +29,31 @@ export function readEnvironment(): EligibilityInput {
     webgl2: hasWebGL2(),
     cores: navigator.hardwareConcurrency || undefined,
   };
+}
+
+// Uygunluk React'in dışında, harici bir store olarak sunuluyor —
+// theme-store.ts'teki çözümün aynısı. Effect içinde setState çağırmak
+// (react-hooks/set-state-in-effect) hem lint kuralına takılıyor hem de
+// gereksiz bir ikinci render turu doğuruyor.
+
+/** Ölçüm bir kez yapılır: karar oturum boyunca değişmez. */
+let cached: boolean | undefined;
+
+export function getEligibilitySnapshot(): boolean {
+  if (cached === undefined) cached = isSceneEligible(readEnvironment());
+  return cached;
+}
+
+/** Sunucuda tarayıcı yok; sahne hiçbir zaman sunucuda render edilmez. */
+export function getEligibilityServerSnapshot(): boolean {
+  return false;
+}
+
+/**
+ * Karar değişmediği için abonelik bir şey yapmaz. Ekran yeniden boyutlanınca
+ * yeniden değerlendirmek, sahneyi kurup yıkarak titremeye yol açardı —
+ * uygunluk bilinçli olarak bir kez, açılışta belirlenir.
+ */
+export function subscribeEligibility(): () => void {
+  return () => {};
 }
