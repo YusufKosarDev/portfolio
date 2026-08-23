@@ -35,5 +35,5 @@ export default async function BlogPage({ params }: { params: Promise<Params> }) 
   const { lang } = await params;
   if (!isLang(lang)) notFound();
 
-  return <BlogIndex posts={getAllPostsMeta()} />;
+  return <BlogIndex posts={getAllPostsMeta(lang)} />;
 }

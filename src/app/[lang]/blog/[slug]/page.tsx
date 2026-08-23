@@ -19,7 +19,7 @@ export async function generateMetadata({
   const { lang, slug } = await params;
   if (!isLang(lang)) return {};
 
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(slug, lang);
   if (!post) return { title: "Blog" };
 
   const path = `/blog/${slug}`;
@@ -44,7 +44,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
   const { lang, slug } = await params;
   if (!isLang(lang)) notFound();
 
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(slug, lang);
   if (!post) notFound();
 
   return <BlogPost post={post} />;

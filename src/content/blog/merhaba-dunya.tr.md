@@ -12,7 +12,7 @@ Buradaki amaç, blog altyapısının uçtan uca çalıştığını göstermek.
 
 Karmaşık bir CMS yerine, dosya tabanlı bir markdown sistemi tercih ettim:
 
-- Her yazı `src/content/blog/` altında bir `.md` dosyası
+- Her yazı `src/content/blog/` altında `<slug>.<dil>.md` dosyası — her dil için bir tane
 - Frontmatter ile başlık, tarih, özet ve etiketler
 - Build sırasında statik olarak üretilir — hızlı ve ücretsiz
 
@@ -26,7 +26,8 @@ export function topla(a: number, b: number): number {
 
 ## Sırada ne var?
 
-Yeni bir yazı eklemek için tek yapman gereken bu klasöre yeni bir `.md`
-dosyası bırakmak. Liste ve detay sayfaları otomatik güncellenir.
+Yeni bir yazı eklemek için bu klasöre `yazi-adi.tr.md` ve `yazi-adi.en.md`
+dosyalarını bırakman yeterli. Liste ve detay sayfaları otomatik güncellenir;
+bir dil eksik kalırsa testler uyarır.
 
 > Okuduğun için teşekkürler — yakında gerçek içeriklerle döneceğim.

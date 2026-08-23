@@ -49,16 +49,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const postRoutes: MetadataRoute.Sitemap = getAllPostsMeta().flatMap((post) => {
-    const path = `/blog/${post.slug}`;
-    return LANGS.map((lang) => ({
-      url: `${SITE_URL}${localePath(lang, path)}`,
-      lastModified: new Date(post.date),
-      changeFrequency: "yearly" as const,
-      priority: lang === "tr" ? 0.6 : 0.5,
-      alternates: { languages: languageAlternates(path) },
-    }));
-  });
+  // Her dilin girdisi kendi dosyasından okunur; tarih o dilin frontmatter'ından
+  // gelir. (Testler tarihlerin diller arasında ayrışmadığını sabitliyor.)
+  const postRoutes: MetadataRoute.Sitemap = LANGS.flatMap((lang) =>
+    getAllPostsMeta(lang).map((post) => {
+      const path = `/blog/${post.slug}`;
+      return {
+        url: `${SITE_URL}${localePath(lang, path)}`,
+        lastModified: new Date(post.date),
+        changeFrequency: "yearly" as const,
+        priority: lang === "tr" ? 0.6 : 0.5,
+        alternates: { languages: languageAlternates(path) },
+      };
+    })
+  );
 
   return [...staticRoutes, ...postRoutes];
 }
