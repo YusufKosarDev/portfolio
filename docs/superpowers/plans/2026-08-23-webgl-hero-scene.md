@@ -1150,3 +1150,51 @@ Expected: 83 test (70 + 7 eligibility + 4 palette + 2 isolation), hepsi temiz.
 - Diğer bölümlere ek WebGL sahneleri
 - Post-processing (bloom vb.) — bütçeyi ikiye katlar, kazancı belirsiz
 - Kart görselinin `translateZ` parallax'ı (Faz 1'de ayrı tur olarak bırakıldı)
+
+---
+
+## Ölçüm sonuçları (2026-08-23, uygulama sonrası)
+
+**three.js maliyeti (Task 1 karar kapısı):** 527.074 bayt ham / **130.408 bayt gzip**.
+Eşik 200KB'dı, spec §2'nin tahmini 150KB'dı — gerçek değer tahminin altında kaldı,
+OGL alternatifine gerek olmadı.
+
+**Bundle (Faz 1 sonrası referansa göre):**
+
+| Ölçüm | Faz 1 sonrası | Faz 2 sonrası | Fark |
+| --- | --- | --- | --- |
+| Toplam JS (ham) | 1.135.941 | 1.668.597 | +532.656 |
+| — three.js chunk'ı | — | 527.074 | tembel |
+| **İlk yüklemeye eklenen** | — | — | **+5.582** |
+| CSS | 49.023 | 49.164 | +141 |
+
+**Uygunluk kapısı (production sunucusunda, chunk adı izlenerek):**
+
+| Senaryo | Canvas | Halka | three.js indi mi |
+| --- | --- | --- | --- |
+| Dar ekran (900px) | hayır | evet | **hayır** |
+| reduced-motion | hayır | evet | **hayır** |
+| Mobil (dokunmatik) | hayır | evet | **hayır** |
+| Masaüstü (1440px) | evet | evet | evet |
+
+**Diğer düşüş yolları:** Tema değiştirildiğinde canvas yeniden mount olmadı ve
+three.js tekrar indirilmedi (palet yerinde değişiyor). WebGL bağlamı zorla
+kaybettirildiğinde sayfa ayakta kaldı, halka görünür oldu, sayfa hatası oluşmadı.
+
+**LCP:** sahne yüklenen masaüstünde 1336 ms, yüklenmeyen dar ekranda 1332 ms —
+4 ms fark, yani gürültü düzeyinde. Sahne ilk boyamayı etkilemiyor.
+
+## Uygulama sırasında planı aşan bulgular
+
+1. **Uygunluk `useSyncExternalStore` ile okunuyor.** Plan effect içinde `useState`
+   öngörüyordu; repo'nun lint kuralı (`react-hooks/set-state-in-effect`) bunu
+   reddediyor ve `theme-store.ts` aynı sorunu zaten harici store ile çözmüş.
+
+2. **Yığın sırası hatası — ve önceden var olan bir hata.** Canvas `-z-10`'daydı,
+   ama `body::before` `z-index: -1`'de opak sayfa gradyanını boyuyor; sahne arka
+   planın arkasına çiziliyordu. Aynı hata `CssBackdrop`'taki konik halkada da
+   vardı: halka bu daldan çok önce de hiç görünmemişti.
+
+3. **Sahne parametreleri yanlış ölçekteydi.** Plandaki nokta boyutu çarpanı (300)
+   ve alfa aralığı (0.35–1.0) ekranın %79'unu kaplayıp ismi yiyordu. Düşürüldü:
+   kaplama %0.5, ortalama alfa ~21, renk parçacık başına atanıyor.

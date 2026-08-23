@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { personal } from "@/lib/data";
 import { useApp } from "@/components/Providers";
 import { CvButton } from "@/components/CvButton";
+import { HeroBackdrop } from "@/components/hero/HeroBackdrop";
 import { RotatingText } from "@/components/RotatingText";
 import {
   GithubIcon,
@@ -35,9 +36,7 @@ export function Hero() {
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
     >
       <div className="grid-overlay pointer-events-none absolute inset-0" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 -translate-y-1/2">
-        <div className="spin-slow h-full w-full rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(139,92,246,0.25),transparent_30%,rgba(34,211,238,0.18),transparent_60%)] opacity-60 blur-2xl" />
-      </div>
+      <HeroBackdrop />
 
       <motion.div
         variants={container}
