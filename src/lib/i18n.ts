@@ -16,6 +16,7 @@ const tr = {
     contact: "İletişim",
     toggleTheme: "Temayı değiştir",
     toggleLang: "Dili değiştir",
+    toggleMenu: "Menüyü aç/kapat",
   },
   hero: {
     badge: "Yeni projelere açık",
@@ -187,6 +188,7 @@ const en: Translation = {
     contact: "Contact",
     toggleTheme: "Toggle theme",
     toggleLang: "Switch language",
+    toggleMenu: "Toggle menu",
   },
   hero: {
     badge: "Open to new projects",
