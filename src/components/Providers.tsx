@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { MotionConfig } from "framer-motion";
 import {
   DEFAULT_LANG,
   getTranslation,
@@ -76,7 +77,14 @@ export function Providers({ children }: { children: ReactNode }) {
     t: getTranslation(lang),
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {/* reducedMotion="user": prefers-reduced-motion açıkken tüm framer-motion
+          animasyonlarını devre dışı bırakır. CSS animasyonları globals.css'te
+          zaten kapatılıyor; bu, JS tarafındaki karşılığı. */}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </AppContext.Provider>
+  );
 }
 
 export function useApp(): AppContextValue {
