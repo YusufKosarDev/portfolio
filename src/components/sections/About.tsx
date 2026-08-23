@@ -6,6 +6,33 @@ import { useApp } from "@/components/Providers";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Reveal, staggerContainer, staggerItem } from "@/components/Reveal";
 import { CountUp } from "@/components/CountUp";
+import { useTilt } from "@/lib/useTilt";
+
+/** İstatistik kartı: dıştaki motion yükselmeyi, içteki düz eleman eğimi taşır. */
+function StatCard({ value, label }: { value: string; label: string }) {
+  const { ref, onPointerMove, onPointerLeave } = useTilt<HTMLDivElement>();
+
+  return (
+    <motion.div
+      whileHover={{ y: -3 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="tilt-scene"
+    >
+      <div
+        ref={ref}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+        className="tilt glass flex items-center justify-between rounded-2xl px-6 py-5 transition-colors hover:bg-foreground/[0.04]"
+      >
+        <CountUp
+          value={value}
+          className="font-display text-3xl font-bold text-gradient"
+        />
+        <span className="text-sm text-muted">{label}</span>
+      </div>
+    </motion.div>
+  );
+}
 
 export function About() {
   const { t } = useApp();
@@ -72,18 +99,7 @@ export function About() {
         <Reveal delay={0.15} className="md:col-span-2">
           <div className="grid gap-4">
             {stats.map((s) => (
-              <motion.div
-                key={s.label}
-                whileHover={{ y: -3 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className="glass flex items-center justify-between rounded-2xl px-6 py-5 transition-colors hover:bg-foreground/[0.04]"
-              >
-                <CountUp
-                  value={s.value}
-                  className="font-display text-3xl font-bold text-gradient"
-                />
-                <span className="text-sm text-muted">{s.label}</span>
-              </motion.div>
+              <StatCard key={s.label} value={s.value} label={s.label} />
             ))}
           </div>
         </Reveal>
