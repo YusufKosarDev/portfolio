@@ -44,7 +44,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <div className="relative z-10 flex h-full flex-col">
           <div className="mb-6">
             <ProjectThumbnail
-              live={project.live}
+              id={project.id}
               media={project.media}
               name={project.name}
               index={index}

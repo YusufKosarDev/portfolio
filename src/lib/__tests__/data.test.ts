@@ -46,6 +46,20 @@ describe("proje verisi", () => {
     }
   });
 
+  it("medyası olmayan her projenin ekran görüntüsü dosyası var", () => {
+    // Görseller `npm run screenshots` ile üretilip repoda tutuluyor. Yeni
+    // proje eklenip komut çalıştırılmazsa kart gradient fallback'a düşerdi.
+    for (const project of projects) {
+      if (project.media) continue;
+
+      const filePath = path.join(PUBLIC_DIR, "projects", `${project.id}.webp`);
+      expect(
+        fs.existsSync(filePath),
+        `${project.id} için ekran görüntüsü yok: npm run screenshots`
+      ).toBe(true);
+    }
+  });
+
   it("yerel medya dosyaları public/ altında gerçekten var", () => {
     for (const project of projects) {
       if (!project.media) continue;

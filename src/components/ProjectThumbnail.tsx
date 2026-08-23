@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { projectScreenshot, type ProjectMedia } from "@/lib/data";
+import Image from "next/image";
+import { type ProjectMedia } from "@/lib/data";
 
 type ProjectThumbnailProps = {
-  /** Ekran görüntüsü alınacak canlı site URL'i (media yoksa kullanılır) */
-  live?: string;
-  /** Canlı link yerine geçen yerel medya (poster + video) */
+  /** Proje kimliği — ekran görüntüsü dosyasının adını belirler */
+  id: string;
+  /** Ekran görüntüsü yerine geçen yerel medya (poster + video) */
   media?: ProjectMedia;
   /** Proje adı (alt metin / erişilebilirlik) */
   name: string;
@@ -84,17 +85,21 @@ function MediaThumbnail({ media, name }: { media: ProjectMedia; name: string }) 
 }
 
 /**
- * Kart üstünde canlı siteden otomatik çekilen ekran görüntüsünü gösterir.
+ * Kart üstünde projenin ekran görüntüsünü gösterir.
+ *
+ * Görseller `npm run screenshots` ile bir kez çekilip repoda tutulur; sayfa
+ * açılışında hiçbir dış servise istek gitmez. Dosya eksikse veya yüklenemezse
+ * kart yine de dolu görünür:
  * - Yüklenene kadar: shimmer'lı zarif skeleton
  * - Hata olursa: koyu temayla uyumlu gradient fallback (proje baş harfiyle)
  * - Hover'da: hafif zoom efekti (group-hover parent karttan tetiklenir)
  */
-export function ProjectThumbnail({ live, media, name, index }: ProjectThumbnailProps) {
+export function ProjectThumbnail({ id, media, name, index }: ProjectThumbnailProps) {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
   const gradient = fallbackGradients[index % fallbackGradients.length];
 
-  // Yerel medya varsa Microlink yerine poster + video kullan.
+  // Yerel medya varsa ekran görüntüsü yerine poster + video kullan.
   if (media) {
     return <MediaThumbnail media={media} name={name} />;
   }
@@ -106,7 +111,7 @@ export function ProjectThumbnail({ live, media, name, index }: ProjectThumbnailP
         <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-foreground/[0.06] via-foreground/[0.02] to-foreground/[0.06]" />
       )}
 
-      {/* Gradient fallback: yükleme hata verirse */}
+      {/* Gradient fallback: görsel yoksa veya yükleme hata verirse */}
       {errored && (
         <div
           className="absolute inset-0 flex items-center justify-center"
@@ -118,17 +123,15 @@ export function ProjectThumbnail({ live, media, name, index }: ProjectThumbnailP
         </div>
       )}
 
-      {/* Canlı ekran görüntüsü (microlink.io) */}
-      {live && !errored && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={projectScreenshot(live)}
-          alt={`${name} — canlı önizleme`}
-          loading="lazy"
-          decoding="async"
+      {!errored && (
+        <Image
+          src={`/projects/${id}.webp`}
+          alt={`${name} — önizleme`}
+          fill
+          sizes="(min-width: 768px) 45vw, 90vw"
           onLoad={() => setLoaded(true)}
           onError={() => setErrored(true)}
-          className={`h-full w-full object-cover object-top transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.04] ${
+          className={`object-cover object-top transition-[opacity,transform] duration-500 ease-out group-hover:scale-[1.04] ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />

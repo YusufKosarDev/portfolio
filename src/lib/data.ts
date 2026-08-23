@@ -81,26 +81,6 @@ export type Project = {
   media?: ProjectMedia;
 };
 
-/**
- * Microlink.io ile canlı siteden otomatik ekran görüntüsü URL'i üretir.
- * `embed=screenshot.url` parametresi doğrudan görsele 302 yönlendirir,
- * böylece <img src> içinde kullanılabilir (manuel görsel yüklemeye gerek yok).
- */
-export function projectScreenshot(siteUrl: string): string {
-  const params = new URLSearchParams({
-    url: siteUrl,
-    screenshot: "true",
-    embed: "screenshot.url",
-    meta: "false",
-    "viewport.width": "1280",
-    "viewport.height": "800",
-    "viewport.deviceScaleFactor": "2",
-    waitUntil: "networkidle2",
-    colorScheme: "dark",
-  });
-  return `https://api.microlink.io/?${params.toString()}`;
-}
-
 export const projects: Project[] = [
   {
     id: "stacklight",
