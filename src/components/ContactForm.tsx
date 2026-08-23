@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "@/components/Providers";
 import { MailIcon } from "@/components/icons";
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "success" | "error" | "rateLimited";
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,6 +15,8 @@ export function ContactForm() {
   const f = t.contact.form;
 
   const [values, setValues] = useState({ name: "", email: "", message: "" });
+  // Honeypot: yalnızca botlar doldurur, gönderimde sunucuya iletilir.
+  const [company, setCompany] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>("idle");
 
@@ -37,8 +39,12 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, company }),
       });
+      if (res.status === 429) {
+        setStatus("rateLimited");
+        return;
+      }
       if (!res.ok) throw new Error("request_failed");
       setStatus("success");
       setValues({ name: "", email: "", message: "" });
@@ -127,7 +133,7 @@ export function ContactForm() {
 
       {/* Durum mesajı */}
       <AnimatePresence mode="wait">
-        {(status === "success" || status === "error") && (
+        {(status === "success" || status === "error" || status === "rateLimited") && (
           <motion.p
             key={status}
             initial={{ opacity: 0, y: -6 }}
@@ -139,10 +145,33 @@ export function ContactForm() {
                 : "bg-red-500/10 text-red-400 ring-1 ring-red-500/20"
             }`}
           >
-            {status === "success" ? f.success : f.error}
+            {status === "success"
+              ? f.success
+              : status === "rateLimited"
+                ? f.errRateLimit
+                : f.error}
           </motion.p>
         )}
       </AnimatePresence>
+
+      {/* Honeypot. Ekran dışında konumlanır; klavyeyle odaklanılamaz ve
+          ekran okuyuculardan gizlidir, bu yüzden yalnızca botlar doldurur.
+          Konumu mutlak olduğundan form yerleşimini etkilemez. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[-9999px] h-px w-px overflow-hidden"
+      >
+        <label htmlFor="cf-company">Company</label>
+        <input
+          id="cf-company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+      </div>
     </form>
   );
 }

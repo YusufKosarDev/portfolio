@@ -160,6 +160,8 @@ const tr = {
       errName: "Lütfen adınızı girin.",
       errEmail: "Geçerli bir e-posta adresi girin.",
       errMessage: "Mesaj en az 10 karakter olmalı.",
+      errRateLimit:
+        "Çok fazla mesaj gönderdiniz. Lütfen birazdan tekrar deneyin.",
     },
     footerNote: "Next.js · TypeScript · Tailwind · Framer Motion ile tasarlandı",
   },
@@ -328,6 +330,8 @@ const en: Translation = {
       errName: "Please enter your name.",
       errEmail: "Please enter a valid email address.",
       errMessage: "Message must be at least 10 characters.",
+      errRateLimit:
+        "Too many messages sent. Please try again in a little while.",
     },
     footerNote: "Built with Next.js · TypeScript · Tailwind · Framer Motion",
   },

@@ -1,31 +1,43 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { personal } from "@/lib/data";
+import {
+  createRateLimiter,
+  getClientIp,
+  isHoneypotTripped,
+  validateContactPayload,
+} from "@/lib/contact";
 
-// Basit e-posta format doğrulaması (sunucu tarafı).
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-type Payload = {
-  name?: string;
-  email?: string;
-  message?: string;
-};
+// Modül düzeyinde tutulur: aynı sunucu örneğine gelen istekler sayacı paylaşır.
+const rateLimiter = createRateLimiter({ limit: 3, windowMs: 10 * 60 * 1000 });
 
 export async function POST(req: Request) {
-  let body: Payload;
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  const name = body.name?.trim() ?? "";
-  const email = body.email?.trim() ?? "";
-  const message = body.message?.trim() ?? "";
+  // Honeypot dolduysa bota başarılı görün ki yeniden denemesin; e-posta gitmez.
+  if (isHoneypotTripped(body)) {
+    return NextResponse.json({ ok: true });
+  }
 
-  // Sunucu tarafı doğrulama
-  if (name.length < 2 || !EMAIL_RE.test(email) || message.length < 10) {
+  const result = validateContactPayload(body);
+  if (!result.ok) {
     return NextResponse.json({ error: "validation" }, { status: 422 });
+  }
+  const { name, email, message } = result.data;
+
+  // Sınır yalnızca gerçekten e-posta gönderen yolda işletilir. Doğrulama
+  // hatası kota harcamadığı için, form hatası yapan kullanıcıyı cezalandırmaz.
+  const limit = rateLimiter.check(getClientIp(req.headers));
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+    );
   }
 
   const apiKey = process.env.RESEND_API_KEY;
